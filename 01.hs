@@ -18,6 +18,7 @@ isSubstringAt str substr i
     | take (length substr) (drop i str) == substr = True
     | otherwise = False
 
+wordSubstring :: (Num b, Enum b) => String -> Int -> Maybe (String, b)
 wordSubstring str i = find (\(word, digit) -> isSubstringAt str word i) words
     where words = zip ["one", "two", "three", "four", "five", "six", "seven", "eight", "nine"] [1..]
 
@@ -32,7 +33,11 @@ extractDigits line = filter (/= ' ') $ map toDigit zipped
                 digitWord = wordSubstring line i
         zipped = zip [0..] line
 
+calibrationValue :: String -> Int
 calibrationValue line = readInt (firstAndLast . filter isDigit $ line)
 
+solvePart1 :: [String] -> Int
 solvePart1 lines = sum $ map calibrationValue lines
+
+solvePart2 :: [String] -> Int
 solvePart2 lines = sum $ map (calibrationValue . extractDigits) lines
