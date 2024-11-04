@@ -1,4 +1,4 @@
-module Utils (readInt, indices, firstAndLast, removeSpaces, splitBy, reverseTuple) where
+module Utils (readInt, indices, firstAndLast, removeSpaces, splitBy, reverseTuple, slice, enumerated, areAdjacent, adjacentCoordinates, getAtCoordinate) where
 
 readInt s = read s :: Int
 
@@ -22,3 +22,21 @@ splitBy delim = foldl (cb delim) []
 
 reverseTuple :: (a, b) -> (b, a)
 reverseTuple (a, b) = (b, a)
+
+slice :: Int -> Int -> [a] -> [a]
+slice start end s = take (end - start + 1) (drop start s)
+
+enumerated :: [a] -> [(Int, a)]
+enumerated = zip [0..]
+
+
+-- coordinates
+
+areAdjacent :: (Int, Int) -> (Int, Int) -> Bool
+areAdjacent (x0, y0) (x1, y1) = abs (x0 - x1) <= 1 && abs (y0 - y1) <= 1
+
+adjacentCoordinates :: (Int, Int) -> [(Int, Int)]
+adjacentCoordinates (x, y) = [(x + dx, y + dy) | dx <- [-1,0,1], dy <- [-1,0,1]]
+
+getAtCoordinate :: [[a]] -> (Int, Int) -> a
+getAtCoordinate grid (x, y) = grid !! y !! x
