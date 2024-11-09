@@ -1,5 +1,5 @@
 import System.Environment (getArgs)
-import Data.List (intersect)
+import Data.List (intersect, elemIndex, tail)
 import Utils (readInt, tuplify2, splitBy, removeSpaces, indices)
 import Data.Maybe (fromJust)
 import qualified Data.Map as Map
@@ -16,22 +16,18 @@ main = do
 
     print $ part1 cards
     print $ part2 cards
-    
+
 part1 :: [Card] -> Int
 part1 cards = sum (map calculateCardPoints cards)
 
 part2 :: [Card] -> Int
-part2 cards = sum $ map (calculateScratchCardCopies cards (calculateMatchesPerCard cards)) (indices cards)
+part2 cards = sum $ map (calculateCardCopies (map calculateCardMatches cards)) (indices cards)
 
-calculateScratchCardCopies :: [Card] -> Map.Map Int Int -> Int ->  Int -- cardIndex, cardsList, pointsMap
-calculateScratchCardCopies cards matchesPerCard cardIndex = result
-    where 
-        result = 1 + sum (map (calculateScratchCardCopies cards matchesPerCard) copiesIndexes)
-        numOfCopies = fromJust (Map.lookup cardIndex matchesPerCard)
-        copiesIndexes = take numOfCopies [(cardIndex+1)..(length cards - 1)]
-
-calculateMatchesPerCard :: [Card] -> Map.Map Int Int 
-calculateMatchesPerCard cards = Map.fromList $ zip [0..] (map calculateCardMatches cards)
+calculateCardCopies :: [Int] -> Int -> Int
+calculateCardCopies matches i = result
+    where
+        result = 1 + sum (map (calculateCardCopies matches) copies)
+        copies = take (matches !! i) [(i+1)..]
 
 calculateCardPoints :: Card -> Int
 calculateCardPoints cards@(winningCards, myCards) = points matchingCards
@@ -43,9 +39,6 @@ calculateCardMatches :: Card -> Int
 calculateCardMatches (winningCards, myCards) = length $ intersect winningCards myCards
 
 parseCard :: String -> Card
-parseCard line = tuplify2 (readInts (map splitNumbers (seperateNumbersGroups (last (removePrefix line)))))
+parseCard line = tuplify2 $ map (map readInt) numberStrings
     where
-            readInts = map (map readInt) 
-            splitNumbers = filter (not . null) . map removeSpaces . splitBy ' '
-            seperateNumbersGroups = splitBy '|'
-            removePrefix = splitBy ':'
+        numberStrings = map words (splitBy '|' ((last . splitBy ':') line))
