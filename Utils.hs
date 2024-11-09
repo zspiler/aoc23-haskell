@@ -1,4 +1,4 @@
-module Utils (readInt, indices, firstAndLast, removeSpaces, splitBy, reverseTuple, slice, enumerated, areAdjacent, adjacentCoordinates, getAtCoordinate) where
+module Utils (readInt, indices, firstAndLast, removeSpaces, splitBy, reverseTuple, slice, enumerated, areAdjacent, adjacentCoordinates, getAtCoordinate, tuplify2) where
 
 readInt s = read s :: Int
 
@@ -13,15 +13,18 @@ removeSpaces :: String -> String
 removeSpaces = filter (/= ' ')
 
 splitBy :: Char -> String -> [String]
-splitBy delim = foldl (cb delim) []
+splitBy delim = filter (not . null) . foldl (cb delim) []
     where cb delim acc c
             | null acc = [[c]]
             | c == delim = acc++[""]
             | otherwise = init acc ++ [last acc ++ [c]]
-
+            
 
 reverseTuple :: (a, b) -> (b, a)
 reverseTuple (a, b) = (b, a)
+
+tuplify2 :: [a] -> (a,a)
+tuplify2 [x,y] = (x,y)
 
 slice :: Int -> Int -> [a] -> [a]
 slice start end s = take (end - start + 1) (drop start s)
