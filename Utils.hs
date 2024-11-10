@@ -1,4 +1,4 @@
-module Utils (readInt, indices, firstAndLast, removeSpaces, splitBy, reverseTuple, slice, enumerated, areAdjacent, adjacentCoordinates, getAtCoordinate, tuplify2) where
+module Utils (readInt, indices, firstAndLast, removeSpaces, splitBy, reverseTuple, slice, enumerated, areAdjacent, adjacentCoordinates, getAtCoordinate, tuplify2, tuplify3) where
 
 readInt s = read s :: Int
 
@@ -25,6 +25,9 @@ reverseTuple (a, b) = (b, a)
 
 tuplify2 :: [a] -> (a,a)
 tuplify2 [x,y] = (x,y)
+
+tuplify3 :: [a] -> (a,a,a)
+tuplify3 [x,y,z] = (x,y,z)
 
 slice :: Int -> Int -> [a] -> [a]
 slice start end s = take (end - start + 1) (drop start s)
