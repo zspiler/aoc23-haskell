@@ -1,8 +1,8 @@
-module Utils (readInt, indices, firstAndLast, removeSpaces, splitBy, reverseTuple, slice, enumerated, areAdjacent, adjacentCoordinates, getAtCoordinate, tuplify2, tuplify3) where
+module Utils (readInt, indices, firstAndLast, removeSpaces, splitBy, reverseTuple, slice, enumerated, areAdjacent, adjacentCoordinates, getAtCoordinate, tuplify2, tuplify3, mapTuple) where
+
+-- Parsing
 
 readInt s = read s :: Int
-
-indices s = take (length s) [0..]
 
 firstAndLast :: [a] -> [a]
 firstAndLast [] = []
@@ -19,6 +19,7 @@ splitBy delim = filter (not . null) . foldl (cb delim) []
             | c == delim = acc++[""]
             | otherwise = init acc ++ [last acc ++ [c]]
             
+-- Tuples
 
 reverseTuple :: (a, b) -> (b, a)
 reverseTuple (a, b) = (b, a)
@@ -29,12 +30,18 @@ tuplify2 [x,y] = (x,y)
 tuplify3 :: [a] -> (a,a,a)
 tuplify3 [x,y,z] = (x,y,z)
 
+mapTuple :: (a -> b) -> (a, a) -> (b, b)
+mapTuple f (a1, a2) = (f a1, f a2)
+
+-- Lists
+
 slice :: Int -> Int -> [a] -> [a]
 slice start end s = take (end - start + 1) (drop start s)
 
 enumerated :: [a] -> [(Int, a)]
 enumerated = zip [0..]
 
+indices s = take (length s) [0..]
 
 -- coordinates
 
