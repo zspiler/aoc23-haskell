@@ -3,8 +3,6 @@ import Utils (slice)
 import Data.Maybe (fromJust)
 import qualified Data.Map as Map
 
-import Debug.Trace (trace)
-
 start = "AAA"
 goal = "ZZZ"
 
