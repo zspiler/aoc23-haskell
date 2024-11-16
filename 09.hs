@@ -10,15 +10,18 @@ main = do
     contents <- readFile inputFile
     let lns = lines contents
 
-    print $ sum $ map (nextValue . parseHistory) lns
+    print $ sum $ map ((\history -> nextValue 0 (sequences [history])) . parseHistory) lns
+    print $ sum $ map ((\history -> prevValue 0 (sequences [history])) . parseHistory) lns
 
+nextValue :: Num a => Int -> [[a]] -> a
+nextValue rowIndex sequences
+    | rowIndex < length sequences - 1 = (row !! (length row-1)) + nextValue (rowIndex+1) sequences
+    | otherwise = 0
+    where row = sequences !! rowIndex
 
-nextValue :: (Num a, Eq a) => [a] -> a
-nextValue history = nextValueHelper 0 (sequences [history])
-    
-nextValueHelper :: Num a => Int -> [[a]] -> a
-nextValueHelper rowIndex sequences
-    | rowIndex < length sequences - 1 = (row !! (length row-1)) + nextValueHelper (rowIndex+1) sequences
+prevValue :: Num a => Int -> [[a]] -> a
+prevValue rowIndex sequences
+    | rowIndex < length sequences - 1 = head row - prevValue (rowIndex+1) sequences
     | otherwise = 0
     where row = sequences !! rowIndex
 
