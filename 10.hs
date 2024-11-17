@@ -26,11 +26,11 @@ walk grid pos path
     | null nextPipes = path
     | otherwise = walk grid (head nextPipes) (path ++ [pos])
     where
-        nextPipes = filter (`notElem` path) (validNeighbourPipes grid pos)
+        nextPipes = filter (`notElem` path) (neighbourPipes grid pos)
         element = getAtCoordinate grid pos
 
-validNeighbourPipes :: [String] -> (Int, Int) -> [(Int, Int)]
-validNeighbourPipes grid pos 
+neighbourPipes :: [String] -> (Int, Int) -> [(Int, Int)]
+neighbourPipes grid pos 
     | element `elem` ['.', 'S'] = []
     | otherwise = map (applyDirection pos) (fromJust $ Map.lookup element pipeData) 
     where
