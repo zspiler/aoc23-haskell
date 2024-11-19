@@ -14,18 +14,15 @@ main = do
     let galaxyCombos = [(galaxy1, galaxy2) | galaxy1 <- galaxies, galaxy2 <- galaxies, galaxy1 /= galaxy2, galaxy1 < galaxy2]
     let emptyRows = findEmptyRows grid
     let emptyCols = findEmptyCols grid
-            
+
     print $ sum $ map (\(galaxy1, galaxy2) -> lengthOfShortestPath galaxy1 galaxy2 grid emptyRows emptyCols) galaxyCombos
 
 lengthOfShortestPath :: (Int, Int) -> (Int, Int) -> [String] -> [Int] -> [Int] -> Int
 lengthOfShortestPath (x1, y1) (x2, y2) grid emptyRows emptyCols = adjustedDiff x1 x2 emptyCols + adjustedDiff y1 y2 emptyRows
 
 adjustedDiff :: Int -> Int -> [Int] -> Int
-adjustedDiff x1 x2 empty = sum adjustedWeights
-    where adjustedWeights = map (\x -> if x `elem` empty then expansionFactor else 1) weights     
-          weights = [lower..higher - 1]
-          lower = min x1 x2
-          higher = max x1 x2
+adjustedDiff x1 x2 empty = sum weightedSteps
+    where weightedSteps = map (\x -> if x `elem` empty then expansionFactor else 1) [min x1 x2 .. max x1 x2 - 1]
 
 findEmptyRows :: [String] -> [Int]
 findEmptyRows grid = filter (\y -> all (=='.') (grid !! y)) (indices grid)
