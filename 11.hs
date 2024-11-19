@@ -18,11 +18,10 @@ main = do
     print $ sum $ map (\(galaxy1, galaxy2) -> lengthOfShortestPath galaxy1 galaxy2 grid emptyRows emptyCols) galaxyCombos
 
 lengthOfShortestPath :: (Int, Int) -> (Int, Int) -> [String] -> [Int] -> [Int] -> Int
-lengthOfShortestPath (x1, y1) (x2, y2) grid emptyRows emptyCols = adjustedDiff x1 x2 emptyCols + adjustedDiff y1 y2 emptyRows
+lengthOfShortestPath (x1, y1) (x2, y2) grid emptyRows emptyCols = distance x1 x2 emptyCols + distance y1 y2 emptyRows
 
-adjustedDiff :: Int -> Int -> [Int] -> Int
-adjustedDiff x1 x2 empty = sum weightedSteps
-    where weightedSteps = map (\x -> if x `elem` empty then expansionFactor else 1) [min x1 x2 .. max x1 x2 - 1]
+distance :: Int -> Int -> [Int] -> Int
+distance x1 x2 empty = sum $ map (\x -> if x `elem` empty then expansionFactor else 1) [min x1 x2 .. max x1 x2 - 1]
 
 findEmptyRows :: [String] -> [Int]
 findEmptyRows grid = filter (\y -> all (=='.') (grid !! y)) (indices grid)
