@@ -1,4 +1,4 @@
-module Utils (readInt, indices, firstAndLast, removeSpaces, splitBy, reverseTuple, slice, enumerated, areAdjacent, adjacentCoordinates, getAtCoordinate, tuplify2, tuplify3, mapTuple) where
+module Utils where
 
 -- Parsing
 
@@ -53,3 +53,6 @@ adjacentCoordinates (x, y) = [(x + dx, y + dy) | dx <- [-1,0,1], dy <- [-1,0,1]]
 
 getAtCoordinate :: [[a]] -> (Int, Int) -> a
 getAtCoordinate grid (x, y) = grid !! y !! x
+
+gridCoordinates :: [[a]] -> [(Int, Int)]
+gridCoordinates grid = [(x, y) | y <- [0..length grid - 1], x <- [0..length (head grid)-1]]
