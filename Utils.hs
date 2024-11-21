@@ -1,7 +1,10 @@
 module Utils where
 
+import Data.Bits (shift, (.&.))
+
 -- Parsing
 
+readInt :: String -> Int
 readInt s = read s :: Int
 
 firstAndLast :: [a] -> [a]
@@ -15,7 +18,7 @@ removeSpaces = filter (/= ' ')
 splitBy :: Char -> String -> [String]
 splitBy delim = filter (not . null) . foldl (cb delim) []
     where cb delim acc c
-            | null acc = [[c]]
+            | null acc && c /= delim = [[c]]
             | c == delim = acc++[""]
             | otherwise = init acc ++ [last acc ++ [c]]
             
@@ -56,3 +59,9 @@ getAtCoordinate grid (x, y) = grid !! y !! x
 
 gridCoordinates :: [[a]] -> [(Int, Int)]
 gridCoordinates grid = [(x, y) | y <- [0..length grid - 1], x <- [0..length (head grid)-1]]
+
+
+-- Bits
+
+isBitSet :: Int -> Int -> Bool
+isBitSet number position = (number .&. (1 `shift` position)) /= 0
