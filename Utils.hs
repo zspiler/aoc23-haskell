@@ -21,7 +21,14 @@ splitBy delim = filter (not . null) . foldl (cb delim) []
             | null acc && c /= delim = [[c]]
             | c == delim = acc++[""]
             | otherwise = init acc ++ [last acc ++ [c]]
-            
+
+splitByEmptyLines :: [String] -> [[String]]
+splitByEmptyLines = foldl cb []
+        where cb acc l
+                | null l = acc ++ [[]]
+                | null acc = [[l]]
+                | otherwise = init acc ++ [last acc ++ [l]] 
+
 -- Tuples
 
 reverseTuple :: (a, b) -> (b, a)
