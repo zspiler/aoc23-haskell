@@ -2,6 +2,10 @@ module Utils where
 
 import Data.Bits (shift, (.&.))
 
+untilStable :: (Eq a) => (a -> a) -> a -> a
+untilStable fn = until (\x -> fn x == x) fn
+
+
 -- Parsing
 
 readInt :: String -> Int
@@ -27,7 +31,7 @@ splitByEmptyLines = foldl cb []
         where cb acc l
                 | null l = acc ++ [[]]
                 | null acc = [[l]]
-                | otherwise = init acc ++ [last acc ++ [l]] 
+                | otherwise = init acc ++ [last acc ++ [l]]
 
 -- Tuples
 
